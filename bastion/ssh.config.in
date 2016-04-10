@@ -1,0 +1,19 @@
+# Loosely based on https://medium.com/@paulskarseth/ansible-bastion-host-proxycommand-e6946c945d30#.gdb1u6bjg
+UserKnownHostsFile=/dev/null
+StrictHostKeyChecking=no
+
+Host bastion
+    User                   admin
+    HostName               BASTION_IP
+    IdentityFile           ~/.ssh/id_rsa
+    BatchMode              yes
+    PasswordAuthentication no
+
+Host *
+    ServerAliveInterval    60
+    TCPKeepAlive           yes
+    ProxyCommand           ssh -W %h:%p -A admin@BASTION_IP
+    ControlMaster          auto
+    ControlPath            ~/.ssh/mux-%r@%h:%p
+    ControlPersist         8h
+    IdentityFile           ~/.ssh/id_rsa
