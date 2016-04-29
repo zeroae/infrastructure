@@ -46,7 +46,9 @@ resource "triton_machine" "bastion" {
   }
 
   provisioner "local-exec" {
-    command = "sed -E -e 's/BASTION_IP/${self.primaryip}/' ${path.module}/ssh.config.in > ssh.config"
+    command = "sed -E -e 's/BASTION_IP/${self.primaryip}/' \
+               -e 's/TRITON_KEY_PATH/${var.triton_key_path}' \
+               ${path.module}/ssh.config.in > ssh.config"
   }
 
 }
