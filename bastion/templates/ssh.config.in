@@ -4,16 +4,16 @@ StrictHostKeyChecking=no
 
 Host bastion
     User                   admin
-    HostName               BASTION_IP
-    IdentityFile           ~/.ssh/id_rsa
+    HostName               ${bastion_host}
+    IdentityFile           ${triton_key_path}
     BatchMode              yes
     PasswordAuthentication no
 
 Host *
     ServerAliveInterval    60
     TCPKeepAlive           yes
-    ProxyCommand           ssh -W %h:%p -A admin@BASTION_IP
+    ProxyCommand           ssh -W %h:%p -A admin@${bastion_host}
     ControlMaster          auto
     ControlPath            ~/.ssh/mux-%r@%h:%p
     ControlPersist         8h
-    IdentityFile           ~/.ssh/id_rsa
+    IdentityFile           ${triton_key_path}
