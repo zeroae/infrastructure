@@ -11,6 +11,19 @@ resource "triton_firewall_rule" "bastion-to-vms" {
   enabled = true
 }
 
+resource "triton_fabric" "bastion" {
+  name = "vpc-network"
+  description = "VPC network"
+  vlan_id = 2 # every DC seems to have a vlan 2 available
+
+  subnet = "10.0.0.0/22"
+  gateway = "10.0.0.1"
+  provision_start_ip = "10.0.0.5"
+  provision_end_ip = "10.0.3.250"
+
+  resolvers = ["8.8.8.8", "8.8.4.4"]
+}
+
 resource "triton_machine" "bastion" {
   count = 1
   name = "bastion${count.index}"
@@ -20,6 +33,13 @@ resource "triton_machine" "bastion" {
   image = "eb9fc1ea-e19a-11e5-bb27-8b954d8c125c"
 
   firewall_enabled = true
+
+  nic {
+    network = "${var.triton_network_public_id}"
+  }
+  nic {
+    network = "${triton_fabric.bastion.id}"
+  }
 
   # User-script
   user_script = "${file("${path.module}/scripts/user-script.sh")}"
