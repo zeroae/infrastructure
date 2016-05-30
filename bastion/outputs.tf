@@ -8,5 +8,5 @@ output "user" {
   value = "admin"
 }
 output "private_network_id" {
-  value = "${triton_machine.bastion.networks.1}"
+  value = "${triton_fabric.bastion.id}"
 }
