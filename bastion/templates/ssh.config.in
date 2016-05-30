@@ -8,6 +8,7 @@ Host bastion
     IdentityFile           ${triton_key_path}
     BatchMode              yes
     PasswordAuthentication no
+    ForwardAgent           yes
 
 Host *
     ServerAliveInterval    60
@@ -17,3 +18,4 @@ Host *
     ControlPath            ~/.ssh/mux-%r@%h:%p
     ControlPersist         8h
     IdentityFile           ${triton_key_path}
+    ForwardAgent           yes
