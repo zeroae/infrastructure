@@ -30,6 +30,8 @@ if [[ ! -e ${SENTINEL} ]]; then
   gpg_key_id=$(mdata-get user-data | gpg --import - 2>&1 | grep 'key .*:' | tail -n 1 | sed -e 's/gpg: key //' -e 's/:.*//')
   mdata-put gpg_key_id ${gpg_key_id}
 
+  gpg -a --export ${gpg_key_id} > /data/packages/pkgbuild.gpg
+
   touch ${SENTINEL}
 fi
 
