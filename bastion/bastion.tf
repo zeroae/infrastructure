@@ -11,10 +11,15 @@ resource "triton_firewall_rule" "bastion-to-vms" {
   enabled = true
 }
 
+resource "triton_vlan" "bastion" {
+  vlan_id = 2 # every DC seems to have a vlan 2 available
+  name = "My-Fabric-VLAN"
+}
+
 resource "triton_fabric" "bastion" {
   name = "vpc-network"
   description = "VPC network"
-  vlan_id = 2 # every DC seems to have a vlan 2 available
+  vlan_id = "triton_vlan.bastion.vlan_id"
 
   subnet = "10.0.0.0/22"
   gateway = "10.0.0.1"
