@@ -30,4 +30,11 @@ resource "triton_machine" "pkgbuild" {
     env  = "prod"
     role = "pkgbuild"
   }
+
+  provisioner "local-exec" {
+    command = "cp ${path.module}/templates/pkgsrc-config.sh ${path.root}/pkgsrc-config.sh"
+  }
+  provisioner "local-exec" {
+    command = "sed -i '' -E -e 's|\\$\\{pkgbuild_host\\}|${self.ips.0}|' ${path.root}/pkgsrc-config.sh"
+  }
 }
